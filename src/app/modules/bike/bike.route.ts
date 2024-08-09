@@ -1,6 +1,7 @@
 import express from 'express';
 import auth from '../../middlewares/auth';
 import validateRequest from '../../middlewares/validateRequest';
+import { USER_ROLE } from '../user/user.constant';
 import { BikeControllers } from './bike.controller';
 import { BikeValidation } from './bike.validation';
 
@@ -8,26 +9,26 @@ const router = express.Router();
 
 router.post(
     '/create-bike',
-    // auth(ROLE_admin),
+    auth(USER_ROLE.admin),
     validateRequest(BikeValidation.createBikeValidationSchema),
     BikeControllers.createBike,
 );
 router.get(
     '/',
-    auth(),
+    // auth(USER_ROLE.admin),
     BikeControllers.getAllBike
 );
 
 router.patch(
     '/:bikeId',
-    // auth(ROLE_admin),
+    auth(USER_ROLE.admin),
     validateRequest(BikeValidation.updateBikeValidationSchema),
     BikeControllers.updateBike
 );
 
 router.delete(
     '/:bikeId',
-    // auth(ROLE_admin),
+    auth(USER_ROLE.admin),
     validateRequest(BikeValidation.updateBikeValidationSchema),
     BikeControllers.deleteBike
 );
