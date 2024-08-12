@@ -1,20 +1,35 @@
 import httpStatus from 'http-status';
 import catchAsync from '../../utils/catchAsync';
 import sendResponse from '../../utils/sendResponse';
-import { RentServices } from './rent.service';
+import { BookingServices } from './rent.service';
 
 const createRent = catchAsync(async (req, res) => {
-
-    const result = await RentServices.createRentIntoDB(req.body);
+    const userInfo = req.user;
+    const result = await BookingServices.createBookingIntoDB(req.body, userInfo);
 
     sendResponse(res, {
         statusCode: httpStatus.OK,
         success: true,
-        message: 'Rent is created succesfully',
+        message: 'Rental created successfully',
+        data: result,
+    });
+});
+
+const returnBike = catchAsync(async (req, res) => {
+    const bookingId = req.params.id;
+    // const userInfo = req.user;
+
+    const result = await BookingServices.returnBikeFromUser(bookingId);
+
+    sendResponse(res, {
+        statusCode: httpStatus.OK,
+        success: true,
+        message: 'Bike returned successfully',
         data: result,
     });
 });
 
 export const RentControllers = {
     createRent,
+    returnBike
 };

@@ -13,9 +13,9 @@ router.post(
     validateRequest(BikeValidation.createBikeValidationSchema),
     BikeControllers.createBike,
 );
+
 router.get(
     '/',
-    // auth(USER_ROLE.admin),
     BikeControllers.getAllBike
 );
 

@@ -4,7 +4,7 @@ export type TBooking = {
     userId: Types.ObjectId;
     bikeId: Types.ObjectId;
     startTime: Date;
-    returnTime: Date;
+    returnTime: Date | null;
     totalCost: number;
     isReturned: boolean;
 };

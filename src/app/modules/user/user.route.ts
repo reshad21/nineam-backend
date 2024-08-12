@@ -1,5 +1,7 @@
 import express from 'express';
+import auth from '../../middlewares/auth';
 import validateRequest from '../../middlewares/validateRequest';
+import { USER_ROLE } from './user.constant';
 import { UserControllers } from './user.controller';
 import { UserValidation } from './user.validation';
 
@@ -7,9 +9,22 @@ const router = express.Router();
 
 router.post(
   '/create-user',
-  // auth(ROLE_admin, ROLE_user),
+  // auth(USER_ROLE.admin),
   validateRequest(UserValidation.userValidationSchema),
   UserControllers.createUser,
+);
+
+router.get(
+  '/me',
+  auth(USER_ROLE.admin, USER_ROLE.user),
+  UserControllers.getProfile,
+);
+
+router.put(
+  '/me',
+  auth(USER_ROLE.admin, USER_ROLE.user),
+  validateRequest(UserValidation.updateUserValidationSchema),
+  UserControllers.updateProfile,
 );
 
 export const UserRoutes = router;
