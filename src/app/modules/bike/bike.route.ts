@@ -8,7 +8,7 @@ import { BikeValidation } from './bike.validation';
 const router = express.Router();
 
 router.post(
-    '/create-bike',
+    '/',
     auth(USER_ROLE.admin),
     validateRequest(BikeValidation.createBikeValidationSchema),
     BikeControllers.createBike,

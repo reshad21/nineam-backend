@@ -3,18 +3,13 @@ import httpStatus from 'http-status';
 import AppError from '../../errors/AppError';
 import { User } from './user.model';
 
-// const createUserIntoDB = async (payload: TUser) => {
-//   const result = await User.create(payload);
-//   return result;
-// };
-
 const getProfilefromDB = async (payload: any) => {
   const result = await User.findOne(
     {
       email: payload.email,
       phone: payload.phone
     }
-  );
+  ).select('-password');
   return result;
 }
 
@@ -23,7 +18,6 @@ const updateProfilefromDB = async (payload: any) => {
   const updateData = await User.findOne({
     email: payload?.email,
     phone: payload?.phone,
-    // name: payload?.name,
   });
 
   if (!updateData) {
