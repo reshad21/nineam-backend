@@ -20,4 +20,10 @@ router.put(
     RentControllers.returnBike
 )
 
+router.get(
+    "/",
+    auth(USER_ROLE.admin, USER_ROLE.user),
+    RentControllers.getRentBike
+)
+
 export const RentRoutes = router;

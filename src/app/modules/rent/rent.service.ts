@@ -91,8 +91,29 @@ const returnBikeFromUser = async (bookingId: string) => {
 };
 
 
+const getMyRentsBike = async (payload: any) => {
+    // Find the user based on email and phone
+    const getUserAllinfo = await User.findOne({
+        email: payload?.email,
+        phone: payload?.phone,
+    });
+
+    if (!getUserAllinfo) {
+        throw new AppError(httpStatus.NOT_FOUND, "Dont get user for bookking bike !")
+    }
+
+    const userId = getUserAllinfo?._id;
+
+    // Find all rentals for the user
+    const rentals = await Booking.find({ userId });
+
+    return rentals;
+}
+
+
 
 export const BookingServices = {
     createBookingIntoDB,
     returnBikeFromUser,
+    getMyRentsBike,
 };
