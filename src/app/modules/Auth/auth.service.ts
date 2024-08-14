@@ -2,8 +2,15 @@ import httpStatus from "http-status";
 import jwt from 'jsonwebtoken';
 import config from "../../config";
 import AppError from "../../errors/AppError";
+import { TUser } from "../user/user.interface";
 import { User } from "../user/user.model";
 import { TLoginUser } from "./auth.interface";
+
+
+const createUserIntoDB = async (payload: TUser) => {
+    const result = await User.create(payload);
+    return result;
+};
 
 const loginUser = async (payload: TLoginUser) => {
     // console.log(payload);
@@ -39,5 +46,6 @@ const loginUser = async (payload: TLoginUser) => {
 }
 
 export const AuthServices = {
+    createUserIntoDB,
     loginUser,
 }

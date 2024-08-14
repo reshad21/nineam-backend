@@ -1,13 +1,12 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import httpStatus from 'http-status';
 import AppError from '../../errors/AppError';
-import { TUser } from '../user/user.interface';
 import { User } from './user.model';
 
-const createUserIntoDB = async (payload: TUser) => {
-  const result = await User.create(payload);
-  return result;
-};
+// const createUserIntoDB = async (payload: TUser) => {
+//   const result = await User.create(payload);
+//   return result;
+// };
 
 const getProfilefromDB = async (payload: any) => {
   const result = await User.findOne(
@@ -51,7 +50,7 @@ const updateProfilefromDB = async (payload: any) => {
 
 
 export const UserServices = {
-  createUserIntoDB,
+  // createUserIntoDB,
   getProfilefromDB,
   updateProfilefromDB
 };
