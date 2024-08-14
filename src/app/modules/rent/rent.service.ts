@@ -6,9 +6,6 @@ import { User } from '../user/user.model';
 import Booking from './rent.model';
 
 const createBookingIntoDB = async (payload: any, userInfo: any) => {
-    // console.log(payload);
-    // {bikeId: '66b440713353f842ff7e9f68',startTime: '2024-06-10T09:00:00Z'}
-    // console.log(userInfo);
 
     // Find the user based on email and phone
     const getUserAllinfo = await User.findOne({
@@ -21,17 +18,6 @@ const createBookingIntoDB = async (payload: any, userInfo: any) => {
     }
 
     const userid = getUserAllinfo?._id;
-
-    // const bookingData = {
-    //     userId: userid,
-    //     bikeId: payload.bikeId,
-    //     startTime: payload.startTime,
-    //     returnTime: null,
-    //     totalCost: 0,
-    //     isReturned: false
-    // }
-
-    // console.log(bookingData);
 
     const result = await Booking.create({
         userId: userid,

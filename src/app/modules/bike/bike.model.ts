@@ -23,22 +23,18 @@ const bikeSchema = new Schema<TBike>(
 
 
 // Pre-save hook to check for duplicate bike (based on name, model, and year)
-bikeSchema.pre('save', async function (next) {
-    const bike = this;
+// bikeSchema.pre('save', async function (next) {
+//     const bike = this;
 
-    // Check if a bike with the same name, model, and year already exists
-    const existingBike = await Bike.findOne({
-        name: bike.name,
-        model: bike.model,
-        year: bike.year
-    });
+//     // Check if a bike with the same name, model, and year already exists
+//     const existingBike = await Bike.findById(bike._id);
 
-    if (existingBike) {
-        throw new AppError(httpStatus.FOUND, "Bike is already save in the database !")
-    }
+//     if (existingBike) {
+//         throw new AppError(httpStatus.FOUND, "Bike is already save in the database !")
+//     }
 
-    next();
-});
+//     next();
+// });
 
 
 
