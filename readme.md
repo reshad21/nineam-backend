@@ -22,6 +22,47 @@ This is the backend of the Bike Rental Reservation System. It provides RESTful A
 - **bcrypt**: Library for hashing passwords.
 - **Zod**: Schema validation library.
 
+# API Endpoints
+
+## User Routes
+
+- **Sign Up:** `POST /api/auth/signup`  
+  Register a new user.
+
+- **Login:** `POST /api/auth/login`  
+  Authenticate a user and return a token.
+
+- **Get Profile:** `GET /api/users/me`  
+  Retrieve the profile of the logged-in user.
+
+- **Update Profile:** `PUT /api/users/me`  
+  Update the profile of the logged-in user.
+
+## Bike Routes
+
+- **Create Bike (Admin Only):** `POST /api/bikes`  
+  Add a new bike to the system. (Admin access required)
+
+- **Get All Bikes:** `GET /api/bikes`  
+  Retrieve a list of all bikes.
+
+- **Update Bike (Admin Only):** `PUT /api/bikes/:id`  
+  Update the details of a specific bike. (Admin access required)
+
+- **Delete Bike (Admin Only):** `DELETE /api/bikes/:id`  
+  Remove a bike from the system. (Admin access required)
+
+## Rental Routes
+
+- **Create Rental:** `POST /api/rentals`  
+  Create a new rental entry.
+
+- **Return Bike:** `PUT /api/rentals/:id/return`  
+  Mark a bike as returned.
+
+- **Get All Rentals:** `GET /api/rentals`  
+  Retrieve a list of all rentals.
+
 ## Installation
 
 1. Clone the repository:
@@ -42,7 +83,7 @@ Create a `.env` file in the root directory and configure the following environme
 
 ```env
 PORT=5000
-MONGO_URI=mongodb://localhost:27017/bike-rental
+MONGO_URI=mongodb://localhost:5000/bike-rental
 JWT_SECRET=your_jwt_secret
 JWT_EXPIRES_IN=1d
 ```
