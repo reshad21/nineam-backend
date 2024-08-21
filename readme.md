@@ -1,13 +1,48 @@
-# Requirement Analysis and Entity-Relationship (ER) Diagram
+# Bike Rental Reservation System Backend
 
-## Requirement Analysis
+## Overview
 
-([Requirement Analysis - 👈 Click Here](https://docs.google.com/document/d/10mkjS8boCQzW4xpsESyzwCCLJcM3hvLghyD_TeXPBx0/edit?usp=sharing))
+This is the backend of the Bike Rental Reservation System. It provides RESTful API endpoints to manage users, bikes, and bookings. The system supports user authentication, authorization, and transaction management, ensuring secure and reliable operations.
 
-*Description*: This document represents the requirement analysis of part-1.
+## Features
 
-## Entity-Relationship (ER) Diagram
+- **User Authentication & Authorization:** Sign up, login, and role-based access control (admin and user).
+- **Bike Management:** Admins can add, update, and delete bikes from the system.
+- **Booking Management:** Users can rent bikes, and the system tracks bookings, costs, and returns.
+- **Error Handling:** Comprehensive error handling for all operations.
+- **Database Transactions:** Ensures consistency and rollback in case of failures during critical operations.
 
-![ER Diagram](./ER_Diagram2.png)
+## Technology Stack
 
-*Description*: This diagram represents the entities and their relationships in the system.
+- **Node.js**: Backend runtime environment.
+- **Express.js**: Web framework for building the RESTful API.
+- **MongoDB**: NoSQL database for storing users, bikes, and bookings.
+- **Mongoose**: ODM (Object Data Modeling) library for MongoDB.
+- **JWT**: JSON Web Tokens for user authentication.
+- **bcrypt**: Library for hashing passwords.
+- **Zod**: Schema validation library.
+
+## Installation
+
+1. Clone the repository:
+
+   ```bash
+   git clone https://github.com/yourusername/bike-rental-reservation-system.git
+   cd bike-rental-reservation-system
+   ```
+
+2. Install dependencies:
+   ```bash
+   npm install
+   ```
+
+## Environment Variables
+
+Create a `.env` file in the root directory and configure the following environment variables:
+
+```env
+PORT=5000
+MONGO_URI=mongodb://localhost:27017/bike-rental
+JWT_SECRET=your_jwt_secret
+JWT_EXPIRES_IN=1d
+```
