@@ -1,7 +1,20 @@
+import httpStatus from 'http-status';
+import AppError from '../../errors/AppError';
 import { TBike } from './bike.interface';
 import { Bike } from './bike.model';
 
 const createBikeIntoDB = async (payload: TBike) => {
+    // Check if a bike with the same name and model already exists
+    const existingBike = await Bike.findOne({
+        name: payload.name,
+        model: payload.model,
+        year: payload.year,
+    });
+
+    if (existingBike) {
+        throw new AppError(httpStatus.CONFLICT, "Bike with the same name, model, and year already exists!");
+    }
+
     const result = await Bike.create(payload);
     return result;
 };
