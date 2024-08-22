@@ -17,12 +17,11 @@ app.use(cors());
 // application routes
 app.use('/api', router);
 
-const test = (req: Request, res: Response) => {
-  const a = 10;
-  res.send(a);
-};
 
-app.get('/', test);
+
+app.get('/', (req: Request, res: Response) => {
+  res.send('App is running!')
+})
 
 app.use(globalErrorHandler);
 
