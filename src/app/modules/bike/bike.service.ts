@@ -12,7 +12,7 @@ const createBikeIntoDB = async (payload: TBike) => {
     });
 
     if (existingBike) {
-        throw new AppError(httpStatus.CONFLICT, "Bike with the same name, model, and year already exists!");
+        throw new AppError(httpStatus.FORBIDDEN, "Bike with the same name, model, and year already exists!");
     }
 
     const result = await Bike.create(payload);
