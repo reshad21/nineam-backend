@@ -9,5 +9,5 @@ export type TBike = {
     year: number;
     model: string;
     brand: string;
-    // image: string;
+    image: string;
 };
