@@ -15,7 +15,7 @@ const bikeSchema = new Schema<TBike>(
         year: { type: Number, required: true },
         model: { type: String, required: true },
         brand: { type: String, required: true },
-        image: { type: String, required: true },
+        // image: { type: String, required: true },
     },
     {
         timestamps: true,
