@@ -19,6 +19,11 @@ router.get(
     BikeControllers.getAllBike
 );
 
+router.get(
+    '/:bikeId',
+    BikeControllers.getSingleBike
+);
+
 router.patch(
     '/:bikeId',
     auth(USER_ROLE.admin),
