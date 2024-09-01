@@ -24,7 +24,7 @@ const updateBikeValidationSchema = z.object({
         year: z.number().int().min(1885).optional(),
         model: z.string().min(1).optional(),
         brand: z.string().min(1).optional(),
-        image: z.string().url(),
+        image: z.string().url().optional(),
     }),
 });
 
