@@ -39,11 +39,7 @@ const updateBikeIntoDB = async (payload: TBike, id: string) => {
 }
 
 const deleteBikeFromDB = async (payload: TBike, id: string) => {
-    const result = await Bike.findByIdAndUpdate(
-        id,
-        { isAvailable: false },
-        { new: true, runValidators: true }
-    );
+    const result = await Bike.findByIdAndDelete(id);
     return result;
 }
 
