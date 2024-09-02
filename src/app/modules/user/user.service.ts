@@ -41,10 +41,16 @@ const updateProfilefromDB = async (payload: any) => {
 };
 
 
+const getAllUsersfromDB = async () => {
+  const result = await User.find().select('-password');
+  return result;
+}
+
 
 
 export const UserServices = {
   // createUserIntoDB,
   getProfilefromDB,
-  updateProfilefromDB
+  updateProfilefromDB,
+  getAllUsersfromDB
 };
