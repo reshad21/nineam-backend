@@ -27,6 +27,11 @@ router.get(
   UserControllers.getAllUsers,
 );
 
+router.delete(
+  '/:userId',
+  auth(USER_ROLE.admin),
+  UserControllers.deleteBike,
+);
 
 
 export const UserRoutes = router;
