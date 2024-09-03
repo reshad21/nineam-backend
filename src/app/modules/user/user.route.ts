@@ -33,5 +33,12 @@ router.delete(
   UserControllers.deleteBike,
 );
 
+router.patch(
+  '/role/:userId',
+  auth(USER_ROLE.admin),
+  validateRequest(UserValidation.updateUserValidationSchema),
+  UserControllers.updateStatus,
+);
+
 
 export const UserRoutes = router;

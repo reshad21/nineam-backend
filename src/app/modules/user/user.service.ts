@@ -78,6 +78,27 @@ const deleteUserFromDB= async (id: string) => {
   return result;
 }
 
+const updateStatusFromDB = async (id:string, payload: any) => {
+  
+  // Extract only the role from the payload
+  const updateFields = { role: payload?.role };
+
+  console.log("Role to update:", updateFields);
+  console.log("User ID:", id);
+
+  // Update the user with the new role
+  const result = await User.findByIdAndUpdate(id, updateFields, {
+    new: true,
+    runValidators: true,
+  });
+
+  // If the update didn't happen, throw an error
+  if (!result) {
+    throw new AppError(httpStatus.NOT_FOUND, "Update did not happen");
+  }
+
+  return result;
+}
 
 
 
@@ -86,5 +107,6 @@ export const UserServices = {
   getProfilefromDB,
   updateProfilefromDB,
   getAllUsersfromDB,
-  deleteUserFromDB
+  deleteUserFromDB,
+  updateStatusFromDB
 };

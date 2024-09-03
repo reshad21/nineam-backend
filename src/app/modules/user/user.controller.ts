@@ -52,10 +52,25 @@ const deleteBike = catchAsync(async (req, res) => {
   });
 });
 
+
+const updateStatus = catchAsync(async (req, res) => {
+  const id = req.params.userId;
+  const data = req.user;
+  const result = await UserServices.updateStatusFromDB(id, data);
+
+  sendResponse(res, {
+    statusCode: httpStatus.OK,
+    success: true,
+    message: 'Profile updated successfully',
+    data: result,
+  });
+});
+
 export const UserControllers = {
   // createUser,
   getProfile,
   updateProfile,
   getAllUsers,
-  deleteBike
+  deleteBike,
+  updateStatus
 };
