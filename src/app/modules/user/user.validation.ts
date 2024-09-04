@@ -20,7 +20,7 @@ const updateUserValidationSchema = z.object({
     email: z.string().email().optional(),
     password: z.string().max(8).optional(),
     phone: z.string().min(1).optional(),
-    address: z.string().min(1).optional(),
+    address: z.string().optional(),
     role: z.enum(['admin', 'user']).optional(),
   }),
 });
