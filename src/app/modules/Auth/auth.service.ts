@@ -29,7 +29,7 @@ const loginUser = async (payload: TLoginUser) => {
         throw new AppError(httpStatus.FORBIDDEN, "password is not matched !")
     }
 
-    const tokenData = { email: user?.email, role: user?.role, phone: user?.phone, name: user?.name, id:user?._id };
+    const tokenData = { email: user?.email, role: user?.role, phone: user?.phone, name: user?.name, address: user?.address, id:user?._id };
 
     const accessToken = jwt.sign(tokenData, config.jwt_access_secret as string, { expiresIn: '10d' });
 

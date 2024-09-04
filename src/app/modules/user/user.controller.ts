@@ -15,19 +15,6 @@ const getProfile = catchAsync(async (req, res) => {
   });
 });
 
-const updateProfile = catchAsync(async (req, res) => {
-  // const id = req.params.userId;
-  const data = req.user;
-  const result = await UserServices.updateProfilefromDB(data);
-
-  sendResponse(res, {
-    statusCode: httpStatus.OK,
-    success: true,
-    message: 'Profile updated successfully',
-    data: result,
-  });
-});
-
 const getAllUsers = catchAsync(async (req, res) => {
   const result = await UserServices.getAllUsersfromDB();
 
@@ -57,6 +44,21 @@ const updateStatus = catchAsync(async (req, res) => {
   const id = req.params.userId;
   const data = req.user;
   const result = await UserServices.updateStatusFromDB(id, data);
+
+  sendResponse(res, {
+    statusCode: httpStatus.OK,
+    success: true,
+    message: 'Profile updated successfully',
+    data: result,
+  });
+});
+
+
+const updateProfile = catchAsync(async (req, res) => {
+  const id = req.params.userId;
+  const data = req.body; /** use it carefully */
+  // console.log(data);
+  const result = await UserServices.updateProfilefromDB(id,data);
 
   sendResponse(res, {
     statusCode: httpStatus.OK,
