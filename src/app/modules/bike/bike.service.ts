@@ -48,8 +48,12 @@ const getAllBikeIntoDB = async (query: Record<string, unknown>) => {
     const bikeQuery = new QueryBuilder(Bike.find(), query).search(bikeSearchableFields).filter().sort().paginate().fields();
 
     const result = await bikeQuery.modelQuery;
+    const meta = await bikeQuery.countTotal();
 
-    return result;
+    return {
+        meta,
+        result,
+    };
 }
 
 export const BikeServices = {
