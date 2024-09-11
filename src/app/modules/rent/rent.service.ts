@@ -6,31 +6,44 @@ import { User } from '../user/user.model';
 import Booking from './rent.model';
 
 const createBookingIntoDB = async (payload: any, userInfo: any) => {
-
     // Find the user based on email and phone
     const getUserAllinfo = await User.findOne({
-        email: userInfo?.email,
-        phone: userInfo?.phone,
+      email: userInfo?.email,
+      phone: userInfo?.phone,
     });
-
+  
     if (!getUserAllinfo) {
-        throw new AppError(httpStatus.NOT_FOUND, "Dont get user for bookking bike !")
+      throw new AppError(httpStatus.NOT_FOUND, "User not found for booking the bike!");
     }
-
+  
     const userid = getUserAllinfo?._id;
-
+  
+    // Set isAvailable: false for the bike being booked
+    const bike = await Bike.findById(payload.bikeId);
+    if (!bike) {
+      throw new AppError(httpStatus.NOT_FOUND, "Bike not found for booking!");
+    }
+  
+    if (!bike.isAvailable) {
+      throw new AppError(httpStatus.BAD_REQUEST, "Bike is already booked!");
+    }
+  
+    // Set the bike as unavailable
+    await Bike.findByIdAndUpdate(payload.bikeId, { isAvailable: false });
+  
+    // Create the booking
     const result = await Booking.create({
-        userId: userid,
-        bikeId: payload.bikeId,
-        startTime: payload.startTime,
-        returnTime: null,
-        totalCost: 0,
-        isReturned: false
+      userId: userid,
+      bikeId: payload.bikeId,
+      startTime: payload.startTime,
+      returnTime: null,
+      totalCost: 0,
+      isReturned: false,
     });
+  
     return result;
-
-
-};
+  };
+  
 
 const returnBikeFromUser = async (bookingId: string) => {
     // Find the rental record based on bikeId
