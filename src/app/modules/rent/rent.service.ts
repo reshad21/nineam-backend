@@ -4,45 +4,85 @@ import AppError from '../../errors/AppError';
 import { Bike } from '../bike/bike.model';
 import { User } from '../user/user.model';
 import Booking from './rent.model';
+import mongoose from 'mongoose';
 
 const createBookingIntoDB = async (payload: any, userInfo: any) => {
-    // Find the user based on email and phone
-    const getUserAllinfo = await User.findOne({
-      email: userInfo?.email,
-      phone: userInfo?.phone,
-    });
+    const session = await mongoose.startSession();
+    session.startTransaction();
   
-    if (!getUserAllinfo) {
-      throw new AppError(httpStatus.NOT_FOUND, "User not found for booking the bike!");
+    try {
+      // Find the user based on email and phone
+      const getUserAllinfo = await User.findOne({
+        email: userInfo?.email,
+        phone: userInfo?.phone,
+      }).session(session);
+  
+      if (!getUserAllinfo) {
+        throw new AppError(httpStatus.NOT_FOUND, "User not found for booking the bike!");
+      }
+  
+      const userId = getUserAllinfo._id;
+  
+      // Find the bike by ID
+      const bike = await Bike.findById(payload.bikeId).session(session);
+      if (!bike) {
+        throw new AppError(httpStatus.NOT_FOUND, "Bike not found for booking!");
+      }
+  
+      if (!bike.isAvailable) {
+        throw new AppError(httpStatus.BAD_REQUEST, "Bike is already booked!");
+      }
+  
+      // Set the bike as unavailable
+      await Bike.findByIdAndUpdate(payload.bikeId, { isAvailable: false }, { session });
+  
+      // Create the booking and destructure the first element from the array
+      const [booking] = await Booking.create(
+        [
+          {
+            userId,
+            bikeId: payload.bikeId,
+            startTime: payload.startTime,
+            returnTime: null,
+            totalCost: payload.totalCost || 0,
+            isReturned: false,
+          },
+        ],
+        { session }
+      );
+  
+      // Populate all information for user and bike
+      const populatedBooking = await Booking.findById(booking._id)
+        .populate({
+          path: "bikeId",
+          select: "name brand cc model pricePerHour year", // Select only the fields you need
+        })
+        .populate({
+          path: "userId",
+          select: "name email", // Similarly, populate user details
+        })
+        .session(session);
+  
+      // Commit the transaction
+      await session.commitTransaction();
+      session.endSession();
+  
+      // Debugging: Check if population works
+      console.log("Populated Booking:", populatedBooking);
+  
+      return populatedBooking;
+    } catch (error) {
+      // Rollback transaction in case of error
+      await session.abortTransaction();
+      session.endSession();
+      throw error;
     }
+};
   
-    const userid = getUserAllinfo?._id;
   
-    // Set isAvailable: false for the bike being booked
-    const bike = await Bike.findById(payload.bikeId);
-    if (!bike) {
-      throw new AppError(httpStatus.NOT_FOUND, "Bike not found for booking!");
-    }
   
-    if (!bike.isAvailable) {
-      throw new AppError(httpStatus.BAD_REQUEST, "Bike is already booked!");
-    }
   
-    // Set the bike as unavailable
-    await Bike.findByIdAndUpdate(payload.bikeId, { isAvailable: false });
   
-    // Create the booking
-    const result = await Booking.create({
-      userId: userid,
-      bikeId: payload.bikeId,
-      startTime: payload.startTime,
-      returnTime: null,
-      totalCost: 0,
-      isReturned: false,
-    });
-  
-    return result;
-  };
   
 
 const returnBikeFromUser = async (bookingId: string) => {
@@ -104,7 +144,13 @@ const getMyRentsBike = async (payload: any) => {
     const userId = getUserAllinfo?._id;
 
     // Find all rentals for the user
-    const rentals = await Booking.find({ userId });
+    const rentals = await Booking.find({ userId }).populate({
+        path: "bikeId",
+        select: "name brand cc model pricePerHour year", // Select only the fields you need
+      }).populate({
+        path: "userId",
+        select: "name email", // Similarly, populate user details
+      });
 
     return rentals;
 }
