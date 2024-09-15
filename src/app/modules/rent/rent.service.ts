@@ -146,7 +146,20 @@ const getMyRentsBike = async (payload: any) => {
     // Find all rentals for the user
     const rentals = await Booking.find({ userId }).populate({
         path: "bikeId",
-        select: "name brand cc model pricePerHour year", // Select only the fields you need
+        select: "name brand cc model pricePerHour year image", // Select only the fields you need
+      }).populate({
+        path: "userId",
+        select: "name email", // Similarly, populate user details
+      });
+
+    return rentals;
+}
+
+const getAllRentBikes = async()=>{
+      // Find all rentals
+      const rentals = await Booking.find().populate({
+        path: "bikeId",
+        select: "name brand cc model pricePerHour year image", // Select only the fields you need
       }).populate({
         path: "userId",
         select: "name email", // Similarly, populate user details
@@ -156,9 +169,25 @@ const getMyRentsBike = async (payload: any) => {
 }
 
 
+const getReturnedRentBikesFromBB = async( id:any )=>{
+    // Find all rentals
+    const rentals = await Booking.findById(id).populate({
+      path: "bikeId",
+      select: "name brand cc model pricePerHour year image", // Select only the fields you need
+    }).populate({
+      path: "userId",
+      select: "name email", // Similarly, populate user details
+    });
+
+  return rentals;
+}
+
+
 
 export const BookingServices = {
     createBookingIntoDB,
     returnBikeFromUser,
     getMyRentsBike,
+    getAllRentBikes,
+    getReturnedRentBikesFromBB,
 };

@@ -9,7 +9,7 @@ const router = express.Router();
 
 router.post(
     '',
-    auth(USER_ROLE.admin, USER_ROLE.user),
+    auth(USER_ROLE.user),
     // validateRequest(RentValidation.rentValidationSchema),
     RentControllers.createRent,
 );
@@ -24,6 +24,18 @@ router.get(
     "/",
     auth(USER_ROLE.admin, USER_ROLE.user),
     RentControllers.getRentBike
+)
+
+router.get(
+    "/allRent",
+    auth(USER_ROLE.admin),
+    RentControllers.getAllRentBikes
+)
+
+router.get(
+    "/return/:rentId",
+    // auth(USER_ROLE.admin),
+    RentControllers.getSingleReturnRentBikes
 )
 
 export const RentRoutes = router;

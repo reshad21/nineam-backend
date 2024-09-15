@@ -43,9 +43,37 @@ const getRentBike = catchAsync(async (req, res) => {
 });
 
 
+const getAllRentBikes = catchAsync(async (req, res) => {
+
+    const result = await BookingServices.getAllRentBikes();
+
+    sendResponse(res, {
+        statusCode: httpStatus.OK,
+        success: true,
+        message: 'All Rent retrieved successfully',
+        data: result,
+    });
+});
+
+
+const getSingleReturnRentBikes = catchAsync(async (req, res) => {
+    const {rentId} = req.params;
+    const result = await BookingServices.getReturnedRentBikesFromBB(rentId);
+
+    sendResponse(res, {
+        statusCode: httpStatus.OK,
+        success: true,
+        message: 'All Rent retrieved successfully',
+        data: result,
+    });
+});
+
+
 
 export const RentControllers = {
     createRent,
     returnBike,
-    getRentBike
+    getRentBike,
+    getAllRentBikes,
+    getSingleReturnRentBikes
 };
