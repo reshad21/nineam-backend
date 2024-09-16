@@ -8,7 +8,7 @@ const userInfoSchema = new mongoose.Schema({
   phone: { type: String, required: true, match: /^[0-9]{10,15}$/ }, // 10-15 digits phone number validation
   email: { type: String, required: true, match: /.+\@.+\..+/ }, // Email validation
   promoCode: { type: String, default: '' }, // Optional promoCode, defaults to an empty string
-  paymentMethod: { type: String, required: true, enum: ['stripe', 'paypal', 'cash'] } // Enum for payment methods
+  paymentMethod: { type: String, enum: ['stripe', 'amerPay', 'cash'] } // Enum for payment methods
 });
 
 // Sub-schema for productInfo
