@@ -27,15 +27,15 @@ const getAllUsers = catchAsync(async (req, res) => {
 });
 
 
-const deleteBike = catchAsync(async (req, res) => {
+const deleteUser = catchAsync(async (req, res) => {
   const id = req.params.userId;
   const result = await UserServices.deleteUserFromDB(id);
 
   sendResponse(res, {
-      statusCode: httpStatus.OK,
-      success: true,
-      message: 'User deleted successfully',
-      data: result,
+    statusCode: httpStatus.OK,
+    success: true,
+    message: 'User deleted successfully',
+    data: result,
   });
 });
 
@@ -58,7 +58,7 @@ const updateProfile = catchAsync(async (req, res) => {
   const id = req.params.userId;
   const data = req.body; /** use it carefully */
   // console.log(data);
-  const result = await UserServices.updateProfilefromDB(id,data);
+  const result = await UserServices.updateProfilefromDB(id, data);
 
   sendResponse(res, {
     statusCode: httpStatus.OK,
@@ -68,11 +68,24 @@ const updateProfile = catchAsync(async (req, res) => {
   });
 });
 
+const getSingleUser = catchAsync(async (req, res) => {
+  const id = req.params.userId;
+  const result = await UserServices.getSingleUserFromDB(id);
+
+  sendResponse(res, {
+    statusCode: httpStatus.OK,
+    success: true,
+    message: 'User retrived successfully',
+    data: result,
+  });
+});
+
 export const UserControllers = {
   // createUser,
   getProfile,
   updateProfile,
   getAllUsers,
-  deleteBike,
-  updateStatus
+  deleteUser,
+  updateStatus,
+  getSingleUser
 };

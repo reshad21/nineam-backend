@@ -30,7 +30,7 @@ router.get(
 router.delete(
   '/:userId',
   auth(USER_ROLE.admin),
-  UserControllers.deleteBike,
+  UserControllers.deleteUser,
 );
 
 router.patch(
@@ -38,6 +38,11 @@ router.patch(
   auth(USER_ROLE.admin),
   validateRequest(UserValidation.updateUserValidationSchema),
   UserControllers.updateStatus,
+);
+
+router.get(
+  '/single-user/:userId',
+  UserControllers.getSingleUser,
 );
 
 

@@ -46,8 +46,8 @@ const getProfilefromDB = async (payload: any) => {
 
 const updateProfilefromDB = async (id: string, payload: any) => {
   // Extract only the fields you want to update
-  const updateFields = { 
-    name: payload?.name, 
+  const updateFields = {
+    name: payload?.name,
     phone: payload?.phone,
   };
 
@@ -74,9 +74,9 @@ const getAllUsersfromDB = async () => {
   return result;
 }
 
-const deleteUserFromDB= async (id: string) => {
+const deleteUserFromDB = async (id: string) => {
   const user = await User.findById(id);
-  
+
   if (!user) {
     throw new AppError(httpStatus.NOT_FOUND, "User not found!");
   }
@@ -85,7 +85,7 @@ const deleteUserFromDB= async (id: string) => {
   return result;
 }
 
-const updateStatusFromDB = async (id:string, payload: any) => {
+const updateStatusFromDB = async (id: string, payload: any) => {
   const updateFields = { role: payload?.role };
 
   const result = await User.findByIdAndUpdate(id, updateFields, {
@@ -101,6 +101,15 @@ const updateStatusFromDB = async (id:string, payload: any) => {
 }
 
 
+const getSingleUserFromDB = async (id: string) => {
+  const user = await User.findById(id);
+  if (!user) {
+    throw new AppError(httpStatus.NOT_FOUND, "User not found!");
+  }
+
+  const result = await User.findById(id);
+  return result;
+}
 
 export const UserServices = {
   // createUserIntoDB,
@@ -108,5 +117,6 @@ export const UserServices = {
   updateProfilefromDB,
   getAllUsersfromDB,
   deleteUserFromDB,
-  updateStatusFromDB
+  updateStatusFromDB,
+  getSingleUserFromDB
 };
