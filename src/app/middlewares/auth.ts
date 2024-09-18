@@ -1,4 +1,3 @@
-
 import { NextFunction, Request, Response } from "express";
 import httpStatus from "http-status";
 import jwt, { JwtPayload } from 'jsonwebtoken';
@@ -10,29 +9,36 @@ import catchAsync from "../utils/catchAsync";
 const auth = (...requiredRoles: TUserRole[]) => {
     return catchAsync(async (req: Request, res: Response, next: NextFunction) => {
 
+        // Extract token from authorization header
         const token = req.headers.authorization;
 
         if (!token) {
-            throw new AppError(httpStatus.UNAUTHORIZED, "Dont give any token !");
+            throw new AppError(httpStatus.UNAUTHORIZED, "Authorization token is missing.");
         }
 
-        //check the token is valid
-        jwt.verify(token, config.jwt_access_secret as string, function (err, decoded) {
-            // err
-            if (err) {
-                throw new AppError(httpStatus.UNAUTHORIZED, "You provided wrong token !");
+        try {
+            // Verify the token and explicitly type it as JwtPayload
+            const decoded = jwt.verify(token, config.jwt_access_secret as string) as JwtPayload;
+
+            if (!decoded) {
+                throw new AppError(httpStatus.UNAUTHORIZED, "Unauthorized")
             }
 
+            // Ensure that the decoded token has a role property
             const role = (decoded as JwtPayload).role;
 
-            if (requiredRoles && !requiredRoles.includes(role)) {
-                throw new AppError(httpStatus.UNAUTHORIZED, "Dont get user role from decoded token !");
+            // Check if the user's role is authorized
+            if (requiredRoles.length && !requiredRoles.includes(role as TUserRole)) {
+                throw new AppError(httpStatus.FORBIDDEN, "User is not authorized to access this resource.");
             }
 
+            // Attach the decoded token to the request object as JwtPayload
             req.user = decoded as JwtPayload;
             next();
-        });
+        } catch (err) {
+            throw new AppError(httpStatus.UNAUTHORIZED, "Invalid or expired token.");
+        }
     });
-}
+};
 
 export default auth;
