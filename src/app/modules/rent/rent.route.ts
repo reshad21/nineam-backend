@@ -1,9 +1,7 @@
 import express from 'express';
 import auth from '../../middlewares/auth';
-import validateRequest from '../../middlewares/validateRequest';
 import { USER_ROLE } from '../user/user.constant';
 import { RentControllers } from './rent.controller';
-import { RentValidation } from './rent.validation';
 
 const router = express.Router();
 
@@ -37,5 +35,10 @@ router.get(
     // auth(USER_ROLE.admin),
     RentControllers.getSingleReturnRentBikes
 )
+
+router.patch(
+    '/return/:rentId',
+    RentControllers.updatePayBillStatus
+);
 
 export const RentRoutes = router;

@@ -15,6 +15,7 @@ const rentValidationSchema = z.object({
         ]).optional(),
         totalCost: z.number().positive().optional(),
         isReturned: z.boolean().default(false),
+        payBill: z.boolean().default(false),
     }),
 });
 

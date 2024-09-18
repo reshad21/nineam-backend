@@ -11,6 +11,7 @@ const bookingSchema = new Schema<TBooking>(
         returnTime: { type: Date, default: null }, // Allow returnTime to be null
         totalCost: { type: Number, required: true },
         isReturned: { type: Boolean, default: false },
+        payBill: { type: Boolean, default: false },
     },
     {
         timestamps: true,

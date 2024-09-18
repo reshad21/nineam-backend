@@ -7,4 +7,5 @@ export type TBooking = {
     returnTime: Date | null;
     totalCost: number;
     isReturned: boolean;
+    payBill: boolean;
 };

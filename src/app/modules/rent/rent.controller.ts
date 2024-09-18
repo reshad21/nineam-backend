@@ -57,7 +57,7 @@ const getAllRentBikes = catchAsync(async (req, res) => {
 
 
 const getSingleReturnRentBikes = catchAsync(async (req, res) => {
-    const {rentId} = req.params;
+    const { rentId } = req.params;
     const result = await BookingServices.getReturnedRentBikesFromBB(rentId);
 
     sendResponse(res, {
@@ -70,10 +70,38 @@ const getSingleReturnRentBikes = catchAsync(async (req, res) => {
 
 
 
+const updatePayBillStatus = catchAsync(async (req, res) => {
+    const id = req.params.rentId; // Make sure this is the correct identifier
+    const data = req.body;
+
+    console.log("Received ID:", id);
+    console.log("Received data:", data);
+
+    const result = await BookingServices.updateRentPayBillStatusDB(data, id);
+
+    if (!result) {
+        return res.status(httpStatus.NOT_FOUND).json({
+            success: false,
+            message: "Booking not found!",
+        });
+    }
+
+    sendResponse(res, {
+        statusCode: httpStatus.OK,
+        success: true,
+        message: 'PayBill Status updated successfully',
+        data: result,
+    });
+});
+
+
+
+
 export const RentControllers = {
     createRent,
     returnBike,
     getRentBike,
     getAllRentBikes,
-    getSingleReturnRentBikes
+    getSingleReturnRentBikes,
+    updatePayBillStatus
 };
