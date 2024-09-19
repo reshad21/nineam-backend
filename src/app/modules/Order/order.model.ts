@@ -33,6 +33,7 @@ const orderSchema = new mongoose.Schema({
     default: 'Pending'
   },
   transactionId: { type: String, required: true }, // transactionId is required
+  bookingID: { type: String, required: true }, // transactionId is required
 }, { timestamps: true }); // Adding createdAt and updatedAt timestamps
 
 // Create the Order model with TypeScript type for TOrder

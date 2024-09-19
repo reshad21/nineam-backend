@@ -2,6 +2,7 @@ import { initiatePayment } from '../payment/payment.utils';
 import { Order } from './order.model';
 
 const createOrder = async (orderData: any) => {
+    console.log("order data==>", orderData.bookingID);
     const transactionId = `TXN-${Date.now()}`;
 
     const payload = {
@@ -23,7 +24,11 @@ const createOrder = async (orderData: any) => {
     }
     //payment
     const paymentSession = await initiatePayment(paymentData);
-    console.log(paymentSession);
+    console.log("paymentSession=>", paymentSession);
+
+    if (paymentSession.result) {
+
+    }
     // return result;
     return paymentSession;
 };

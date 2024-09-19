@@ -15,4 +15,5 @@ export type TOrder = {
   status: 'Pending' | 'Paid' | 'Shipped' | 'Completed' | 'Cancelled'; // Restrict status to these values
   paymentStatus: 'Pending' | 'Paid' | 'Failed'; // Restrict paymentStatus to these values
   transactionId: string;
+  bookingID: string;
 };
