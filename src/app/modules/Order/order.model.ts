@@ -1,4 +1,4 @@
-import mongoose from 'mongoose';
+import mongoose, { Schema } from 'mongoose';
 import { TOrder } from './order.interface'; // Ensure TOrder matches the schema structure
 
 // Sub-schema for userInfo
@@ -29,12 +29,13 @@ const orderSchema = new mongoose.Schema({
   },
   paymentStatus: {
     type: String,
-    enum: ['Pending', 'Paid', 'Failed'], // Restrict to enum values
+    enum: ['Pending', 'Paid', 'Failed'],
     default: 'Pending'
   },
-  transactionId: { type: String, required: true }, // transactionId is required
-  bookingID: { type: String, required: true }, // transactionId is required
-}, { timestamps: true }); // Adding createdAt and updatedAt timestamps
+  transactionId: { type: String, required: true },
+  bookingID: { type: Schema.Types.ObjectId, required: true },
+},
+  { timestamps: true }
+);
 
-// Create the Order model with TypeScript type for TOrder
 export const Order = mongoose.model<TOrder>('Order', orderSchema);
