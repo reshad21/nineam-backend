@@ -23,7 +23,7 @@ const createBikeIntoDB = async (payload: TBike) => {
 
 
 const getSingleBikeIntoDB = async (id: string) => {
-    const result = await Bike.findById(id);
+    const result = await Bike.findById(id).populate('reviews');
     return result;
 }
 

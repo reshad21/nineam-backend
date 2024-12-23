@@ -1,3 +1,4 @@
+import { Types } from "mongoose";
 
 export type TBike = {
     // user: Types.ObjectId;
@@ -11,4 +12,5 @@ export type TBike = {
     model: string;
     brand: string;
     image: string;
+    reviews: Types.ObjectId[];
 };

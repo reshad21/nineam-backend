@@ -17,6 +17,7 @@ const bikeSchema = new Schema<TBike>(
         model: { type: String, required: true },
         brand: { type: String, required: true },
         image: { type: String, required: true },
+        reviews: [{ type: Schema.Types.ObjectId, ref: 'Review' }],
     },
     {
         timestamps: true,
