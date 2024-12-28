@@ -43,7 +43,7 @@ const deleteBikeFromDB = async (payload: TBike, id: string) => {
 
 const getAllBikeIntoDB = async (query: Record<string, unknown>) => {
 
-    const bikeSearchableFields = ['name', 'model', 'brand'];
+    const bikeSearchableFields = ['name', 'model', 'brand', 'cc'];
 
     const bikeQuery = new QueryBuilder(Bike.find(), query).search(bikeSearchableFields).filter().sort().paginate().fields();
 
