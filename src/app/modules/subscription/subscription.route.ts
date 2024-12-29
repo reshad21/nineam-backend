@@ -15,7 +15,6 @@ router.post(
 
 router.get(
     '/',
-    validateRequest(SubscriptionValidation.SubscriptionValidationSchema),
     SubscriptionControllers.getAllSubscription,
 );
 
