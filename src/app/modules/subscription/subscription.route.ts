@@ -1,5 +1,7 @@
 import express from 'express';
+import auth from '../../middlewares/auth';
 import validateRequest from '../../middlewares/validateRequest';
+import { USER_ROLE } from '../user/user.constant';
 import { SubscriptionControllers } from './subscription.controller';
 import { SubscriptionValidation } from './subscription.validation';
 
@@ -7,9 +9,14 @@ const router = express.Router();
 
 router.post(
     '/',
-    // auth(USER_ROLE.user),
     validateRequest(SubscriptionValidation.SubscriptionValidationSchema),
     SubscriptionControllers.createSubscription,
+);
+
+router.get(
+    '/',
+    validateRequest(SubscriptionValidation.SubscriptionValidationSchema),
+    SubscriptionControllers.getAllSubscription,
 );
 
 export const SubscriptionRoutes = router;

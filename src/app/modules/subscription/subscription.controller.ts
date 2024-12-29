@@ -16,8 +16,21 @@ const createSubscription = catchAsync(async (req, res) => {
 });
 
 
+const getAllSubscription = catchAsync(async (req, res) => {
+    const result = await SubscriptionServices.getSubscriptionIntoDB(req.query);
+    sendResponse(res, {
+        statusCode: httpStatus.OK,
+        success: true,
+        message: 'Subscription retrieved successfully',
+        meta: result.meta,
+        data: result.result,
+    });
+});
+
+
 
 export const SubscriptionControllers = {
     createSubscription,
+    getAllSubscription,
 };
 
