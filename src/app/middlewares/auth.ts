@@ -1,45 +1,33 @@
+import jwt from "jsonwebtoken";
 
-import { NextFunction, Request, Response } from "express";
-import httpStatus from "http-status";
-import jwt, { JwtPayload } from 'jsonwebtoken';
-import config from "../config";
-import AppError from "../errors/AppError";
-import { TUserRole } from "../modules/user/user.interface";
-import catchAsync from "../utils/catchAsync";
+import { Request, Response, NextFunction } from "express";
+import User from "../models/User";
+// Adjust the import path as needed based on your project structure
 
-const auth = (...requiredRoles: TUserRole[]) => {
-    return catchAsync(async (req: Request, res: Response, next: NextFunction) => {
+const auth = async (req: Request, res: Response, next: NextFunction) => {
+  try {
+    const token = req.header("Authorization")?.replace("Bearer ", "")
 
-        const token = req.headers.authorization;
+    if (!token) {
+      return res.status(401).json({ message: "No token, authorization denied" })
+    }
 
-        if (!token) {
-            throw new AppError(httpStatus.UNAUTHORIZED, "Dont give any token !");
-        }
+    const decoded = jwt.verify(token, process.env.JWT_SECRET || "fallback_secret")
+    const userId = typeof decoded === "object" && decoded !== null && "userId" in decoded ? (decoded as any).userId : null;
+    if (!userId) {
+      return res.status(401).json({ message: "Token is not valid" })
+    }
+    const user = await User.findById(userId).select("-password")
 
-        // checking if the given token is valid
-        let decoded;
-        try {
-            decoded = jwt.verify(
-                token,
-                config.jwt_access_secret as string,
-            ) as JwtPayload;
-        } catch (error) {
-            throw new AppError(httpStatus.UNAUTHORIZED, 'Unauthorized');
-        }
+    if (!user) {
+      return res.status(401).json({ message: "Token is not valid" })
+    }
 
-        const { role, userId, iat } = decoded;
-
-        if (requiredRoles && !requiredRoles.includes(role)) {
-            throw new AppError(
-                httpStatus.UNAUTHORIZED,
-                'You are not authorized  hi!',
-            );
-        }
-
-        req.user = decoded as JwtPayload & { role: string };
-        next();
-
-    });
+    req.user = user
+    next()
+  } catch (error) {
+    res.status(401).json({ message: "Token is not valid" })
+  }
 }
 
 export default auth;
