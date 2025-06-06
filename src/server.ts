@@ -12,18 +12,29 @@ const app = express()
 
 // Middleware
 app.use(express.json())
-app.use(
-  cors({
-    origin: (origin, callback) => {
-      if (!origin || origin.includes("localhost")) {
-        callback(null, true)
-      } else {
-        callback(new Error("Not allowed by CORS"))
-      }
-    },
-    credentials: true,
-  })
-)
+// app.use(
+//   cors({
+//     origin: ['https://nine-am-frontend.vercel.app/'],
+//     credentials: true,
+//   })
+// )
+
+// app.use(
+//   cors({
+//     origin: "*",
+//     methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
+//   })
+// );
+
+const corsOptions = {
+  origin: "https://nine-am-frontend.vercel.app",
+  methods: ["GET", "POST", "OPTIONS"],
+  allowedHeaders: ["Content-Type", "Authorization"],
+  credentials: true,
+};
+
+app.use(cors(corsOptions));
+
 
 // Connect to MongoDB
 mongoose.connect(process.env.MONGODB_URI || "mongodb://localhost:27017/nineamdb")
