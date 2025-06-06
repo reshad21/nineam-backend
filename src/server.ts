@@ -28,7 +28,7 @@ app.use(express.json())
 
 const corsOptions = {
   origin: "https://nine-am-frontend.vercel.app",
-  methods: ["GET", "POST", "OPTIONS"],
+  methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
   allowedHeaders: ["Content-Type", "Authorization"],
   credentials: true,
 };
